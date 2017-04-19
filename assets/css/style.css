@@ -1,0 +1,61 @@
+* {
+	color: lemonchiffon;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	box-sizing: border-box;
+}
+
+html, body {
+	background-image: url("https://image.freepik.com/free-photo/nature-design-with-bokeh-effect_1048-1882.jpg");
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+
+.game-container {
+	width: 80%;
+	height: 100%;
+	margin: 0 auto;
+	background: linear-gradient(to bottom, black, green);
+	padding: 0;
+}
+
+#logo {
+	display: inline-block;
+}
+
+img {
+	width: 150px;
+	height: auto;
+}
+
+h1, h2 {
+	text-shadow: 2px 2px 5px orange;
+}
+
+.question, .option {
+	height: 50px;
+	position: relative;
+}
+
+span {
+	/*position: absolute;
+	top: 50%;
+	transform: translate(0, -50%)*/
+	padding-top: 20px;
+}
+
+.question {
+	border: 2px solid yellow;
+}
+
+.choose {
+	background-color: gray;
+	margin-top: 20px;
+}
+
+.option {
+	border: 2px solid white;
+	margin: 5px;
+}
+
