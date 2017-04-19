@@ -24,7 +24,7 @@ html, body {
 	display: inline-block;
 }
 
-img {
+#logo img {
 	width: 150px;
 	height: auto;
 }
@@ -42,7 +42,8 @@ span {
 	/*position: absolute;
 	top: 50%;
 	transform: translate(0, -50%)*/
-	padding-top: 20px;
+	display: inline-block;
+	padding-top: 10px;
 }
 
 .question {
@@ -57,5 +58,10 @@ span {
 .option {
 	border: 2px solid white;
 	margin: 5px;
+}
+
+.option:hover {
+	background-color: lightgray;
+	cursor: pointer;
 }
 

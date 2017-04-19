@@ -1,6 +1,10 @@
 $(document).ready(function() {
 
 var questionTracker = 0;
+var time = 0;
+var go;
+var correctGuesses = 0;
+var wrongGuesses = 0;
 
 var trivia = [
 	{
@@ -20,21 +24,93 @@ var trivia = [
 		options: ["Squirrel", "Koala", "Brown Bat", "Possum"],
 		answer: "Koala",
 		image: "https://media.giphy.com/media/aWpSIlUoSvcNa/giphy-downsized-large.gif"
+	},
+	{
+		question: "In the TV series Friends, what type of monkey does Ross have as a pet?",
+		options: ["Tamarin", "Capuchin", "Squirrel Monkey", "Bonobo"],
+		answer: "Capuchin",
+		image: "http://static.fjcdn.com/gifs/Monkey_16b83c_507120.gif"
 	}
 ];
 
-function start(input) {
-	var insertQuestion = $("<div>").attr("class", "question");
-	var insertOptions = $("<div>").attr("class", "choose");
-	insertQuestion.append("<span>" + trivia[input].question + "</span").appendTo(".game-container");
-	for (var i = 0; i < trivia[input].options.length; i++) {
-		insertOptions.append("<div class='option'><span>" + trivia[input].options[i] + "</span></div>");
-	}
-	$(".game-container").append(insertOptions);
-	console.log(trivia[input].options.length);
+function start() {
+	time = 10;
+	$(".question").empty();
+	$(".choose").empty();
+	timer();
+	addTrivia(questionTracker);
 };
 
 start(questionTracker);
+
+
+function addTrivia(input) {
+	if (questionTracker < trivia.length) {
+	$(".question").append("<span>" + trivia[input].question + "</span");
+	for (var i = 0; i < trivia[input].options.length; i++) {
+		$(".choose").append("<div class='option'><span>" + trivia[input].options[i] + "</span></div>");
+	}
+	$(".trivia").append($(".choose"));
+	} else {
+		results();
+	}
+};
+
+function timer() {
+$(".timer").html("Seconds " + time);
+go = setInterval(function() {
+		time--;
+		$(".timer").html("Seconds " + time);
+		if (time < 1) {
+			clearInterval(go);
+			wrongGuesses++;
+			console.log(questionTracker);
+			questionTracker++;
+			if (questionTracker < trivia.length) {
+				start();
+			} else {
+				results();
+			};
+		};
+	}, 1000);
+};
+
+$(document).delegate('.option', 'click', function(){
+	clearInterval(go);
+	if ($(this).text() === trivia[questionTracker].answer) {
+		correctGuesses++;
+	} else {
+		wrongGuesses++
+	};
+	questionTracker++;
+	if (questionTracker < trivia.length) {
+	start();
+	} else {
+		results();
+	};
+});
+
+function answerGif() {
+	$(".timer").empty();
+	$(".question").empty();
+	$(".choose").empty();
+	setTimeout(function() {
+		var addImage = $("<img>");
+		console.log(questionTracker);
+		addImage.attr("src", trivia[questionTracker - 1].image).appendTo(".trivia");
+	}, 5000);
+}
+
+function results() {
+	$(".trivia").empty();
+	$(".trivia").append("<div>Correct Guesses: " + correctGuesses + "</div>");
+	$(".trivia").append("<div>Wrong Guesses: " + wrongGuesses + "</div");
+}
+
 console.log(trivia[0].options.length);
 
+$("#button").on("click", function() {
+	clearInterval(go);
 })
+
+});
