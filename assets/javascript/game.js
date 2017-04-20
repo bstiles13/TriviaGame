@@ -1,8 +1,9 @@
 $(document).ready(function() {
 
-var questionTracker = 0;
+var index = 0;
 var time = 0;
-var go;
+var timeout = 0;
+var countdown;
 var correctGuesses = 0;
 var wrongGuesses = 0;
 
@@ -34,75 +35,69 @@ var trivia = [
 ];
 
 function start() {
-	time = 10;
-	$(".question").empty();
-	$(".choose").empty();
-	timer();
-	addTrivia(questionTracker);
+	if (index < trivia.length) {
+	$(".timer").show().empty();
+	$(".question").show().empty();
+	$(".choose").show().empty();
+	$(".gif").hide();
+	addTrivia(index);
+	setTimer();
+	} else {
+		results();
+	}
 };
 
-start(questionTracker);
+start(index);
 
 
 function addTrivia(input) {
-	if (questionTracker < trivia.length) {
 	$(".question").append("<span>" + trivia[input].question + "</span");
 	for (var i = 0; i < trivia[input].options.length; i++) {
 		$(".choose").append("<div class='option'><span>" + trivia[input].options[i] + "</span></div>");
 	}
 	$(".trivia").append($(".choose"));
-	} else {
-		results();
-	}
 };
 
-function timer() {
-$(".timer").html("Seconds " + time);
-go = setInterval(function() {
+function setTimer() {
+	time = 15;
+	timeout = time;
+	$(".timer").html("Seconds Remaining: " + time);
+	countdown = setInterval(function() {
 		time--;
-		$(".timer").html("Seconds " + time);
-		if (time < 1) {
-			clearInterval(go);
+		$(".timer").html("Seconds Remaining: " + time);
+		if (time === -1) {
 			wrongGuesses++;
-			console.log(questionTracker);
-			questionTracker++;
-			if (questionTracker < trivia.length) {
-				start();
-			} else {
-				results();
-			};
-		};
+			clearInterval(countdown);
+			transition();
+		}
 	}, 1000);
 };
 
+function transition() {
+	$(".timer").hide();
+	$(".question").hide();
+	$(".choose").hide();
+	$(".gif").html("<img id='pic' src='" + trivia[index].image + "'</img>").show();
+	setTimeout(function() {
+		index++;
+		start(index);
+	}, 5000);
+
+};
+
 $(document).delegate('.option', 'click', function(){
-	clearInterval(go);
-	if ($(this).text() === trivia[questionTracker].answer) {
+	if ($(this).text() === trivia[index].answer) {
 		correctGuesses++;
 	} else {
-		wrongGuesses++
+		wrongGuesses++;
 	};
-	questionTracker++;
-	if (questionTracker < trivia.length) {
-	start();
-	} else {
-		results();
-	};
+	clearInterval(countdown);
+	transition();
 });
-
-function answerGif() {
-	$(".timer").empty();
-	$(".question").empty();
-	$(".choose").empty();
-	setTimeout(function() {
-		var addImage = $("<img>");
-		console.log(questionTracker);
-		addImage.attr("src", trivia[questionTracker - 1].image).appendTo(".trivia");
-	}, 5000);
-}
 
 function results() {
 	$(".trivia").empty();
+	$(".trivia").append("<br><div><u>Game Results:</u></div><br><br>");
 	$(".trivia").append("<div>Correct Guesses: " + correctGuesses + "</div>");
 	$(".trivia").append("<div>Wrong Guesses: " + wrongGuesses + "</div");
 }
@@ -110,7 +105,7 @@ function results() {
 console.log(trivia[0].options.length);
 
 $("#button").on("click", function() {
-	clearInterval(go);
+	clearInterval(countdown);
 })
 
 });
