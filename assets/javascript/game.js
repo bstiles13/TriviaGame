@@ -6,13 +6,14 @@ var timeout = 0;
 var countdown;
 var correctGuesses = 0;
 var wrongGuesses = 0;
+var pause = false;
 
 var trivia = [
 	{
 		question: "What is the tallest mountain from base to peak?",
 		options: ["Mount Everest", "Mauna Kea", "Chimborazo", "Mount Kilimanjaro"],
 		answer: "Mauna Kea",
-		image: "http://4.bp.blogspot.com/_Uh-8dgzI1Fs/R7CsO10mCuI/AAAAAAAAC4M/uDd9dr7kb6A/s320/sunset4.gif"
+		image: "http://geology.com/records/mauna-kea-snow.gif"
 	},
 	{
 		question: "What animal has the greatest bite force?",
@@ -31,6 +32,18 @@ var trivia = [
 		options: ["Tamarin", "Capuchin", "Squirrel Monkey", "Bonobo"],
 		answer: "Capuchin",
 		image: "http://static.fjcdn.com/gifs/Monkey_16b83c_507120.gif"
+	},
+	{
+		question: "With approximately 700 species worldwide, what kind of insect is a 'whirligig'?",
+		options: ["Spider", "Dragonfly", "Ant", "Beetle"],
+		answer: "Beetle",
+		image: "https://media.giphy.com/media/GnAXkKXa4hHJS/giphy.gif"
+	},
+	{
+		question: "Which of these animals has the longest lifespan?",
+		options: ["Asian Elephant", "Greenland Shark", "Macaw Parrot", "Galapagos Tortoise"],
+		answer: "Greenland Shark", 
+		image: "http://68.media.tumblr.com/54bf19378a5f262725c9eb680427de04/tumblr_nnsehvu9rW1th8gyeo1_r1_500.gif"
 	}
 ];
 
@@ -96,16 +109,42 @@ $(document).delegate('.option', 'click', function(){
 });
 
 function results() {
-	$(".trivia").empty();
-	$(".trivia").append("<br><div><u>Game Results:</u></div><br><br>");
-	$(".trivia").append("<div>Correct Guesses: " + correctGuesses + "</div>");
-	$(".trivia").append("<div>Wrong Guesses: " + wrongGuesses + "</div");
+	$(".timer").hide();
+	$(".question").hide();
+	$(".choose").hide();
+	$(".gif").hide();
+	$(".trivia").append("<div class='results'></div>")
+	$(".results").append("<br><div><u>Game Results:</u></div><br><br>");
+	$(".results").append("<div>Correct Guesses: " + correctGuesses + "</div>");
+	$(".results").append("<div>Wrong Guesses: " + wrongGuesses + "</div");
+	$(".results").append("<br><br><input class='reset btn btn-default' type='button' value='reset'>");
 }
 
 console.log(trivia[0].options.length);
 
-$("#button").on("click", function() {
-	clearInterval(countdown);
+function reset() {
+	$(".results").remove();
+	index = 0;
+	time = 0;
+	timeout = 0;
+	countdown;
+	correctGuesses = 0;
+	wrongGuesses = 0;
+	start(index);
+};
+
+$("#globe").on("click", function() {
+	if (pause === false) {
+		pause = true;
+		clearInterval(countdown);
+	} else {
+		pause = false;
+		start(countdown);
+	}
+})
+
+$(document).delegate('.reset', 'click', function(){
+	reset();
 })
 
 });
