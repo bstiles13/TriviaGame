@@ -8,6 +8,7 @@ var correctGuesses = 0;
 var wrongGuesses = 0;
 var pause = false;
 
+//All trivia questions and associated items are stored in objects within an array
 var trivia = [
 	{
 		question: "What is the tallest mountain from base to peak?",
@@ -47,6 +48,7 @@ var trivia = [
 	}
 ];
 
+//Begins game by calling first trivia question and beginning timer
 function start() {
 	if (index < trivia.length) {
 	$(".timer").show().empty();
@@ -60,9 +62,10 @@ function start() {
 	}
 };
 
+//Game begins on page load
 start(index);
 
-
+//Calls trivia question based on input (index of trivia array) variable
 function addTrivia(input) {
 	$(".question").append("<span>" + trivia[input].question + "</span");
 	for (var i = 0; i < trivia[input].options.length; i++) {
@@ -71,6 +74,7 @@ function addTrivia(input) {
 	$(".trivia").append($(".choose"));
 };
 
+//Defines 15 second timer that starts at the beginning of each trivia question
 function setTimer() {
 	time = 15;
 	timeout = time;
@@ -86,6 +90,8 @@ function setTimer() {
 	}, 1000);
 };
 
+//Reveals gif associated with question and represents the correct answer
+//Gif lasts for 5 seconds and then Start function is called, restarting the timer and triggering next question (or end results)
 function transition() {
 	$(".timer").hide();
 	$(".question").hide();
@@ -98,6 +104,7 @@ function transition() {
 
 };
 
+//When the player makes a choice, the result is tallied and the Transition function is called, restarting timer and triggering next question
 $(document).delegate('.option', 'click', function(){
 	if ($(this).text() === trivia[index].answer) {
 		correctGuesses++;
@@ -108,6 +115,7 @@ $(document).delegate('.option', 'click', function(){
 	transition();
 });
 
+//Function that displays correct and wrong guesses, as well as a reset button to restart the game
 function results() {
 	$(".timer").hide();
 	$(".question").hide();
@@ -122,6 +130,7 @@ function results() {
 
 console.log(trivia[0].options.length);
 
+//Resets the game and variables back to original state
 function reset() {
 	$(".results").remove();
 	index = 0;
@@ -133,6 +142,7 @@ function reset() {
 	start(index);
 };
 
+//Clicking the globe gif pauses the timer; clicking again resets the timer
 $("#globe").on("click", function() {
 	if (pause === false) {
 		pause = true;
@@ -143,6 +153,7 @@ $("#globe").on("click", function() {
 	}
 })
 
+//Calls Reset function when reset button is clicked
 $(document).delegate('.reset', 'click', function(){
 	reset();
 })
