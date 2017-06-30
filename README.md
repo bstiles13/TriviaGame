@@ -1,3 +1,5 @@
+# Animal Trivia
+
 A trivia game that shows only one question until the player answers it or his/her time runs out.
 
 If the player selects the correct answer, the browser displays a gif representing the correct choice. After a few seconds, the next question is displayed automatically.
